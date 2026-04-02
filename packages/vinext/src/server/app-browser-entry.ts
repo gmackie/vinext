@@ -9,7 +9,7 @@ import {
   encodeReply,
   setServerCallback,
 } from "@vitejs/plugin-rsc/browser";
-import { flushSync } from "react-dom";
+import { startTransition } from "react";
 import { hydrateRoot } from "react-dom/client";
 import "../client/instrumentation-client.js";
 import { notifyAppRouterTransitionStart } from "../client/instrumentation-client-state.js";
@@ -164,7 +164,9 @@ function registerServerActionCallback(): void {
     });
 
     if (isServerActionResult(result)) {
-      getReactRoot().render(result.root);
+      startTransition(() => {
+        getReactRoot().render(result.root);
+      });
       if (result.returnValue) {
         if (!result.returnValue.ok) throw result.returnValue.data;
         return result.returnValue.data;
@@ -172,7 +174,9 @@ function registerServerActionCallback(): void {
       return undefined;
     }
 
-    getReactRoot().render(result as ReactNode);
+    startTransition(() => {
+      getReactRoot().render(result as ReactNode);
+    });
     return result;
   });
 }
@@ -254,8 +258,8 @@ async function main(): Promise<void> {
         setClientParams({});
       }
 
-      const rscPayload = await createFromFetch(Promise.resolve(navResponse));
-      flushSync(() => {
+      const rscPayload = createFromFetch(Promise.resolve(navResponse));
+      startTransition(() => {
         getReactRoot().render(rscPayload as ReactNode);
       });
     } catch (error) {
@@ -279,10 +283,12 @@ async function main(): Promise<void> {
   if (import.meta.hot) {
     import.meta.hot.on("rsc:update", async () => {
       try {
-        const rscPayload = await createFromFetch(
+        const rscPayload = createFromFetch(
           fetch(toRscUrl(window.location.pathname + window.location.search)),
         );
-        getReactRoot().render(rscPayload as ReactNode);
+        startTransition(() => {
+          getReactRoot().render(rscPayload as ReactNode);
+        });
       } catch (error) {
         console.error("[vinext] RSC HMR error:", error);
       }
