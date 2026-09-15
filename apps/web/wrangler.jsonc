@@ -45,6 +45,7 @@
     "enabled": true,
     "head_sampling_rate": 1,
     "logs": {
+      "destinations": ["signoz-logs"],
       "enabled": true,
       "invocation_logs": true,
     },
