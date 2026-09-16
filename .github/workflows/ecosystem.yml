@@ -16,6 +16,7 @@ jobs:
   load-repos:
     if: github.event.repository.fork == false
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     outputs:
       repos: ${{ steps.read.outputs.repos }}
     steps:

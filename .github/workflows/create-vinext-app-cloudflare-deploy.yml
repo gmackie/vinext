@@ -19,6 +19,7 @@ jobs:
     if: github.repository_owner == 'cloudflare'
     name: Deploy and smoke test
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       CVA_CLOUDFLARE_WORKER: create-vinext-app-cloudflare
       # Public test namespace already used by examples/workers-cache.
