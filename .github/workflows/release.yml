@@ -28,6 +28,7 @@ jobs:
     name: Release
     if: github.repository_owner == 'cloudflare'
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     permissions:
       contents: write # version PR branch, git tags, GitHub Releases
       pull-requests: write # open / update the Version PR

@@ -13,6 +13,7 @@ concurrency:
 jobs:
   load-repos:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     outputs:
       repos: ${{ steps.read.outputs.repos }}
     steps:
@@ -39,6 +40,7 @@ jobs:
     needs: test
     if: failure()
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       actions: read
     steps:

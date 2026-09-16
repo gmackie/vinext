@@ -17,6 +17,7 @@ jobs:
   check:
     name: Check
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -37,6 +38,7 @@ jobs:
   test-unit:
     name: Vitest (unit ${{ matrix.shardIndex }}/${{ matrix.shardTotal }})
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -52,6 +54,7 @@ jobs:
   test-integration:
     name: Vitest (integration ${{ matrix.shardIndex }}/${{ matrix.shardTotal }})
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     strategy:
       fail-fast: false
       matrix:
@@ -123,6 +126,7 @@ jobs:
     if: ${{ !cancelled() }}
     needs: [test-integration]
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -152,6 +156,7 @@ jobs:
   create-next-app:
     name: create-next-app (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -267,6 +272,7 @@ jobs:
   create-next-app-cloudflare:
     name: create-next-app (cloudflare init)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       CNA_CLOUDFLARE_WORKER: create-next-app-cloudflare
       # Public test namespace already used by examples/workers-cache.
@@ -355,6 +361,7 @@ jobs:
   create-vinext-app-cloudflare:
     name: create-vinext-app (Cloudflare build)
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       CVA_CLOUDFLARE_WORKER: create-vinext-app-cloudflare
       # Public test namespace already used by examples/workers-cache.
@@ -449,6 +456,7 @@ jobs:
   e2e:
     name: E2E (${{ matrix.label }})
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
@@ -676,6 +684,7 @@ jobs:
         e2e,
       ]
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: All checks passed
         if: ${{ !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}

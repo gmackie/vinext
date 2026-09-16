@@ -17,6 +17,7 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     name: Deploy ${{ matrix.example.name }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
       deployments: write
@@ -250,6 +251,7 @@ jobs:
   smoke-test:
     name: Smoke Test Deployments
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     needs: deploy
     permissions:
       contents: read
@@ -269,6 +271,7 @@ jobs:
   deployed-e2e:
     name: E2E Deployed Example
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     needs: deploy
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     permissions:
@@ -304,6 +307,7 @@ jobs:
   comment:
     name: Comment Preview URLs
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     needs: deploy
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     permissions:
