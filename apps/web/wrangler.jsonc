@@ -50,6 +50,7 @@
       "invocation_logs": true,
     },
     "traces": {
+      "destinations": ["signoz-traces"],
       "enabled": true,
     },
   },
